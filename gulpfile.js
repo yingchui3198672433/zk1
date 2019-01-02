@@ -13,7 +13,7 @@ gulp.task('devScss', function() {
         .pipe(gulp.dest('./src/css'))
 });
 
-gulp.task('server', function() {
+gulp.task('browserSync', function() {
     return gulp.src('src')
         .pipe(server({
             port: '8080',
@@ -31,4 +31,22 @@ gulp.task('watch', function() {
     gulp.watch('./src/scss/*.scss', gulp.series('devScss'))
 });
 
-gulp.task('default', gulp.series('devScss', 'devJs', 'server', 'watch'));
+gulp.task('default', gulp.series('devScss', 'devJs', 'browserSync', 'watch'));
+
+gulp.task('html', function() {
+    return gulp.src('./src/index.html')
+        .pipe(gulp.dest('./dist'))
+});
+
+gulp.task('css', function() {
+    return gulp.src('./src/css/*.css')
+        .pipe(gulp.dest('./dist/css'))
+});
+
+gulp.task('js', function() {
+    return gulp.src('./src/js/*.js')
+        .pipe(gulp.dest('./dist/js'))
+});
+
+
+gulp.task('build', gulp.series('html', 'css', 'js'));
