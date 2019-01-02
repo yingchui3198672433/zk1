@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var mincss = require('gulp-clean-css');
+var minjs = require('gulp-uglify');
+var concat = require('gulp-concat');
 var server = require('gulp-webserver');
 
 
@@ -17,10 +19,16 @@ gulp.task('server', function() {
             port: '8080',
             open: true
         }))
-})
+});
+
+gulp.task('devJs', function() {
+    return gulp.src('./src/js/*.js')
+        .pipe(minjs())
+        .pipe(gulp.dest('./src/js'))
+});
 
 gulp.task('watch', function() {
     gulp.watch('./src/scss/*.scss', gulp.series('devScss'))
 });
 
-gulp.task('dev', gulp.series('devScss', 'server', 'watch'));
+gulp.task('default', gulp.series('devScss', 'devJs', 'server', 'watch'));
